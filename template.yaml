@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Practicing SQS
+
+Globals:
+  Function:
+    Timeout: 10
+    CodeUri: src/
+    Runtime: python3.8
+
+Resources:
+  DeadLetter:
+    Type: AWS::SQS::Queue
+
+  RawQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      DelaySeconds: 0
+      # MessageRetentionPerion: 1209600
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DeadLetter.Arn
+        maxReceiveCount: 4
+      # Tags:
+      #   - Key: Practice
+      #   Value: SQS
+      VisibilityTimeout: 120
+
+  # RawQueuePolicy:
+  #   Type: AWS::SQS::QueuePolicy
+  #   Properties:
+  #     Queues:
+  #      - !Ref RawQueue
+  #     PolicyDocument:
+  #     Statement:
+  #       -
+  #         Effect: Allow
+  #         Action:
+  #           - SQS:SendMessage
+  #           - SQS:ReceiveMessage
+  #         Resource: !GetAtt RawQueue.Arn
+
+
+  TriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt RawQueue.Arn
+            BatchSize: 10
+            Enabled: true
+
+
+Outputs:
+  RawSqsUrl:
+    Description: URL of the sqs event
+    Value: !Ref RawQueue
+ 
+  DeadLetterUrl:
+    Description: URL of the sqs event
+    Value: !Ref DeadLetter
