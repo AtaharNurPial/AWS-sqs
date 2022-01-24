@@ -75,6 +75,10 @@ CreateFunction:
             QueueName: !Ref RawQueuePolicy
 
 Outputs:
+   CreateApi:
+    Description: "API Gateway endpoint URL for Prod stage for Create function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/create/"
+
   RawSqsUrl:
     Description: URL of the sqs event
     Value: !Ref RawQueue
