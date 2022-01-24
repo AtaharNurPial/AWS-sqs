@@ -9,4 +9,12 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["TriggerFunction"]
 
+[function_build_definitions.5876c34a-2de1-4265-9440-841f12343aa8]
+codeuri = "/home/pial/Edu/Spring22/Internship/sqs-practice/src/CreateFn"
+runtime = "python3.8"
+architecture = "x86_64"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["CreateFunction"]
+
 [layer_build_definitions]

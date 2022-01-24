@@ -40,6 +40,22 @@ Resources:
             - SQS:ReceiveMessage
           Resource: !GetAtt RawQueue.Arn
 
+  # TriggerFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     CodeUri: src/TriggerFn/
+  #     Handler: app.lambda_handler
+  #     Events:
+  #       SQSEvent:
+  #         Type: SQS
+  #         Properties:
+  #           Queue: !GetAtt RawQueue.Arn
+  #           BatchSize: 10
+  #           Enabled: true
+  #     Policies:
+  #     - SQSPollerPolicies:
+  #         QueueName: !Ref RawQueuePolicy
+
   TriggerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -53,10 +69,10 @@ Resources:
             BatchSize: 10
             Enabled: true
       Policies:
-      - SQSPollerPolicies:
+      - SQSPollerPolicy:
           QueueName: !Ref RawQueuePolicy
 
-CreateFunction:
+  CreateFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/CreateFn/
