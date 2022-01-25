@@ -14,7 +14,7 @@ Resources:
   RawQueue:
     Type: AWS::SQS::Queue
     Properties:
-      DelaySeconds: 0
+      # DelaySeconds: 0
       # MessageRetentionPerion: 1209600
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt DeadLetter.Arn
@@ -22,7 +22,7 @@ Resources:
       # Tags:
       #   - Key: Practice
       #   Value: SQS
-      VisibilityTimeout: 120
+      # VisibilityTimeout: 120
 
   RawQueuePolicy:
     Type: AWS::SQS::QueuePolicy
@@ -36,9 +36,11 @@ Resources:
         - Sid: Allow-User-SendMessage
           Effect: Allow
           Action:
-            - SQS:SendMessage
-            - SQS:ReceiveMessage
-          Resource: !GetAtt RawQueue.Arn
+            # - SQS:SendMessage
+            # - SQS:ReceiveMessage
+            "sqs:*"
+          # Resource: !GetAtt RawQueue.Arn
+          Resource: "*"
 
   # TriggerFunction:
   #   Type: AWS::Serverless::Function
