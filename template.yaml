@@ -42,22 +42,6 @@ Resources:
           # Resource: !GetAtt RawQueue.Arn
           Resource: "*"
 
-  # TriggerFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     CodeUri: src/TriggerFn/
-  #     Handler: app.lambda_handler
-  #     Events:
-  #       SQSEvent:
-  #         Type: SQS
-  #         Properties:
-  #           Queue: !GetAtt RawQueue.Arn
-  #           BatchSize: 10
-  #           Enabled: true
-  #     Policies:
-  #     - SQSPollerPolicies:
-  #         QueueName: !Ref RawQueuePolicy
-
   TriggerFunction:
     Type: AWS::Serverless::Function
     Properties:
